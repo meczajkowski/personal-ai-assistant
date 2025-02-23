@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import { Telegraf, Context } from "telegraf";
+import { MessageHandler } from "./handlers/message.handler";
 
 const app = express();
 
@@ -9,6 +10,7 @@ if (!process.env.TELEGRAM_BOT_TOKEN) {
 }
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const messageHandler = new MessageHandler();
 
 // Middleware
 app.use(express.json());
@@ -24,6 +26,9 @@ bot.command("help", async (ctx: Context) => {
     "Available commands:\n/start - Start the bot\n/help - Show this help message"
   );
 });
+
+// Handle text messages
+bot.on("text", (ctx) => messageHandler.handleMessage(ctx));
 
 // Error handling
 bot.catch(async (err: unknown, ctx: Context) => {
