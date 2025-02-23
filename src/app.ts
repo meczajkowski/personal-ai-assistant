@@ -28,7 +28,10 @@ bot.command("help", async (ctx: Context) => {
 });
 
 // Handle text messages
-bot.on("text", (ctx) => messageHandler.handleMessage(ctx));
+bot.on("text", (ctx) => messageHandler.handleTextMessage(ctx));
+
+// Handle photo messages
+bot.on("photo", (ctx) => messageHandler.handlePhotoMessage(ctx));
 
 // Error handling
 bot.catch(async (err: unknown, ctx: Context) => {
